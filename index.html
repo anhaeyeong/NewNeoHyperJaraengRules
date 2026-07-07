@@ -1458,29 +1458,35 @@
 
     async function publishDocumentToGitHub(doc) {
       const token = getGitHubToken();
-      const currentFile = await getGitHubFile(token);
       const content = `${JSON.stringify(doc, null, 2)}\n`;
+      const bodyFromFile = (file) => JSON.stringify({
+        message: "Update rules.json from site editor",
+        content: toBase64Utf8(content),
+        sha: file?.sha,
+        branch: GITHUB_BRANCH
+      });
 
-      await githubRequest(
-        `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${encodeURIComponent(GITHUB_DATA_PATH)}`,
-        token,
-        {
-          method: "PUT",
-          body: JSON.stringify({
-            message: "Update rules.json from site editor",
-            content: toBase64Utf8(content),
-            sha: currentFile?.sha,
-            branch: GITHUB_BRANCH
-          })
+      try {
+        const currentFile = await getGitHubFile(token);
+        await putGitHubFile(token, bodyFromFile(currentFile));
+      } catch (error) {
+        if (!isShaMismatch(error)) {
+          throw error;
         }
-      );
+
+        const latestFile = await getGitHubFile(token, { bustCache: true });
+        await putGitHubFile(token, bodyFromFile(latestFile));
+      }
     }
 
-    async function getGitHubFile(token) {
+    async function getGitHubFile(token, options = {}) {
+      const cacheBust = options.bustCache ? `&t=${Date.now()}` : "";
+
       try {
         return await githubRequest(
-          `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${encodeURIComponent(GITHUB_DATA_PATH)}?ref=${encodeURIComponent(GITHUB_BRANCH)}`,
-          token
+          `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${encodeURIComponent(GITHUB_DATA_PATH)}?ref=${encodeURIComponent(GITHUB_BRANCH)}${cacheBust}`,
+          token,
+          { cache: "no-store" }
         );
       } catch (error) {
         if (error.status === 404) {
@@ -1491,9 +1497,22 @@
       }
     }
 
+    async function putGitHubFile(token, body) {
+      return githubRequest(
+        `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${encodeURIComponent(GITHUB_DATA_PATH)}`,
+        token,
+        {
+          method: "PUT",
+          cache: "no-store",
+          body
+        }
+      );
+    }
+
     async function githubRequest(url, token, options = {}) {
       const response = await fetch(url, {
         method: options.method || "GET",
+        cache: options.cache || "no-store",
         headers: {
           Accept: "application/vnd.github+json",
           Authorization: `Bearer ${token}`,
@@ -1510,10 +1529,17 @@
         const message = data?.message || `GitHub API 오류: ${response.status}`;
         const error = new Error(message);
         error.status = response.status;
+        error.data = data;
         throw error;
       }
 
       return data;
+    }
+
+    function isShaMismatch(error) {
+      return error.status === 409
+        || error.status === 422
+        || /sha|does not match/i.test(error.message || "");
     }
 
     function getGitHubToken() {
