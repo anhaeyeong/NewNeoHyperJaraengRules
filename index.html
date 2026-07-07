@@ -1,0 +1,1488 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>자랭의 정석 - 자유랭크 팀 운영 규칙</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1d252f;
+      --muted: #5f6975;
+      --line: #d9dee6;
+      --paper: #f7f4ee;
+      --panel: #ffffff;
+      --accent: #0f8b8d;
+      --accent-dark: #096568;
+      --warn: #c2410c;
+      --danger: #a83232;
+      --shadow: 0 14px 40px rgba(29, 37, 47, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(180deg, rgba(15, 139, 141, 0.08), rgba(247, 244, 238, 0) 320px),
+        var(--paper);
+      color: var(--ink);
+      font-family: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
+      line-height: 1.68;
+      letter-spacing: 0;
+    }
+
+    button,
+    textarea {
+      font: inherit;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(217, 222, 230, 0.86);
+      background: rgba(247, 244, 238, 0.92);
+      backdrop-filter: blur(14px);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 12px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .nav {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: thin;
+    }
+
+    .nav a {
+      flex: 0 0 auto;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 6px 11px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .nav a:hover {
+      border-color: var(--line);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--ink);
+    }
+
+    .button {
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--ink);
+      padding: 7px 11px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      border-color: #b6c0cb;
+      background: #fbfcfd;
+    }
+
+    .button.primary {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .button.danger {
+      border-color: rgba(168, 50, 50, 0.28);
+      color: var(--danger);
+    }
+
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 46px 0 72px;
+    }
+
+    .hero {
+      display: grid;
+      gap: 18px;
+      padding: 16px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: var(--accent-dark);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(34px, 6vw, 68px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 780px;
+      margin: 0;
+      color: #3e4854;
+      font-size: clamp(17px, 2vw, 21px);
+      font-weight: 600;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 20px 0 38px;
+    }
+
+    .summary-item {
+      min-height: 110px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.78);
+      padding: 18px;
+      box-shadow: 0 8px 22px rgba(29, 37, 47, 0.05);
+    }
+
+    .summary-item strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .summary-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.52;
+    }
+
+    .rules {
+      display: grid;
+      gap: 18px;
+    }
+
+    .rule {
+      display: grid;
+      grid-template-columns: 74px minmax(0, 1fr);
+      gap: 22px;
+      border-top: 1px solid var(--line);
+      padding: 30px 0 12px;
+    }
+
+    .rule-number {
+      display: grid;
+      width: 58px;
+      height: 58px;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--accent);
+      color: white;
+      font-size: 24px;
+      font-weight: 900;
+      box-shadow: var(--shadow);
+    }
+
+    .rule h2 {
+      margin: 0 0 9px;
+      font-size: clamp(22px, 3vw, 31px);
+      line-height: 1.24;
+      letter-spacing: 0;
+    }
+
+    .rule p {
+      margin: 0 0 16px;
+      color: #3e4854;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .rule ul,
+    .checklist ul {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .rule li,
+    .checklist li {
+      position: relative;
+      padding-left: 24px;
+      color: #26313d;
+      font-size: 15px;
+    }
+
+    .rule li::before,
+    .checklist li::before {
+      position: absolute;
+      top: 0.72em;
+      left: 3px;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: var(--accent);
+      content: "";
+      transform: translateY(-50%);
+    }
+
+    .rule.warning .rule-number,
+    .rule.warning li::before {
+      background: var(--warn);
+    }
+
+    .checklist {
+      margin-top: 40px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: clamp(22px, 4vw, 34px);
+      box-shadow: var(--shadow);
+    }
+
+    .checklist h2 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 3vw, 34px);
+      letter-spacing: 0;
+    }
+
+    .checklist p {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .closing {
+      margin-top: 34px;
+      border-left: 6px solid var(--accent);
+      padding: 18px 0 18px 22px;
+    }
+
+    .closing strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 22px;
+    }
+
+    .closing p {
+      max-width: 780px;
+      margin: 0;
+      color: #3e4854;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .editor {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 20;
+      display: none;
+      width: min(780px, calc(100vw - 40px));
+      max-height: min(820px, calc(100vh - 40px));
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: 0 22px 70px rgba(29, 37, 47, 0.22);
+      overflow: hidden;
+    }
+
+    .editor.open {
+      display: grid;
+      grid-template-rows: auto minmax(280px, 1fr) auto auto auto;
+    }
+
+    .editor-header,
+    .editor-actions,
+    .status {
+      padding: 14px;
+    }
+
+    .editor-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .editor-header strong {
+      font-size: 16px;
+    }
+
+    .editor-subtitle {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .editor-body {
+      display: grid;
+      gap: 14px;
+      overflow: auto;
+      padding: 14px;
+      background: #fbfaf7;
+    }
+
+    .editor-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      border-top: 1px solid var(--line);
+      background: #fff;
+      padding: 10px 14px;
+      scrollbar-width: thin;
+    }
+
+    .editor-tab {
+      flex: 0 0 auto;
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--muted);
+      padding: 7px 11px;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .editor-tab[aria-selected="true"] {
+      border-color: var(--accent);
+      background: rgba(15, 139, 141, 0.1);
+      color: var(--accent-dark);
+    }
+
+    .editor-section[data-editor-tab] {
+      display: none;
+    }
+
+    .editor-section[data-editor-tab].active {
+      display: block;
+    }
+
+    .editor-section,
+    .rule-form {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 14px;
+    }
+
+    .editor-section h3,
+    .rule-form h4 {
+      margin: 0 0 12px;
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      color: #34404c;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid #cfd6df;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      padding: 9px 10px;
+      font: inherit;
+      font-size: 14px;
+      line-height: 1.45;
+      outline: none;
+    }
+
+    .field textarea {
+      min-height: 78px;
+      resize: vertical;
+    }
+
+    .field textarea.tall {
+      min-height: 118px;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(15, 139, 141, 0.12);
+    }
+
+    .form-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .rule-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .rule-form-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .rule-form-header h4 {
+      margin: 0;
+    }
+
+    .editor-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .status {
+      min-height: 44px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+
+    @media (max-width: 920px) {
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .top-actions,
+      .nav {
+        width: 100%;
+      }
+
+      .top-actions {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav {
+        width: 100%;
+      }
+
+      .summary {
+        grid-template-columns: 1fr;
+      }
+
+      .rule {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .rule-number {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .topbar {
+        position: static;
+      }
+
+      .nav,
+      #editButton,
+      .editor {
+        display: none;
+      }
+
+      main {
+        width: 100%;
+        padding: 22px 0;
+      }
+
+      .summary-item,
+      .checklist {
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark">ZR</span>
+        <span id="brandText">자랭의 정석</span>
+      </div>
+      <div class="top-actions">
+        <nav class="nav" id="nav" aria-label="문서 목차"></nav>
+        <button class="button" id="editButton" type="button" aria-controls="editor" aria-expanded="false">편집</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="title">
+      <p class="eyebrow" id="eyebrow"></p>
+      <h1 id="title"></h1>
+      <p class="lead" id="lead"></p>
+    </section>
+
+    <section class="summary" id="summary" aria-label="핵심 요약"></section>
+    <section class="rules" id="rules" aria-label="상세 규칙"></section>
+
+    <section class="checklist" id="checklistSection">
+      <h2 id="checklistTitle"></h2>
+      <p id="checklistIntro"></p>
+      <ul id="checklist"></ul>
+    </section>
+
+    <section class="closing" aria-label="한 줄 원칙">
+      <strong id="closingTitle"></strong>
+      <p id="closingText"></p>
+    </section>
+  </main>
+
+  <aside class="editor" id="editor" aria-label="문서 편집 패널">
+    <div class="editor-header">
+      <div>
+        <strong>문서 편집</strong>
+        <p class="editor-subtitle">양식에 입력하면 rules.json 데이터가 자동으로 구성됩니다.</p>
+      </div>
+      <button class="button" id="closeEditor" type="button">닫기</button>
+    </div>
+    <form class="editor-body" id="editorForm"></form>
+    <div class="editor-tabs" id="editorTabs" role="tablist" aria-label="편집 영역"></div>
+    <div class="editor-actions">
+      <button class="button primary" id="saveData" type="button">저장</button>
+      <button class="button" id="addSummary" type="button">요약 추가</button>
+      <button class="button" id="addRule" type="button">규칙 추가</button>
+      <button class="button" id="downloadData" type="button">rules.json 받기</button>
+      <button class="button danger" id="resetData" type="button">초기화</button>
+    </div>
+    <div class="status" id="status" role="status"></div>
+  </aside>
+
+  <script>
+    const STORAGE_KEY = "jarank-rules-document-v1";
+    const DATA_URL = "rules.json";
+
+    const DEFAULT_DOC = {
+      brand: "자랭의 정석",
+      eyebrow: "자유랭크 팀 운영 규칙",
+      title: "다섯 명이 같은 기준으로 움직이기 위한 약속",
+      lead: "각자의 피지컬이나 챔피언 숙련도보다 중요한 것은 같은 장면을 같은 방식으로 해석하고, 시야와 조합과 합류를 기준으로 게임을 굴리는 것이다.",
+      summary: [
+        {
+          title: "시야 먼저",
+          text: "운영 단계에서는 잡템보다 제어 와드를 우선하고, 오브젝트 전에 먼저 지역을 밝힌다."
+        },
+        {
+          title: "원딜 포함",
+          text: "중후반 교전은 원딜이 참여할 수 있는 라인과 위치를 만든 뒤 설계한다."
+        },
+        {
+          title: "조합대로",
+          text: "픽의 컨셉을 정했으면 그 방식으로 이긴다. 결국 대충 들이받는 한타로 돌아가지 않는다."
+        }
+      ],
+      rules: [
+        {
+          id: "vision",
+          nav: "시야",
+          title: "시야는 모두가 잡는다",
+          tone: "normal",
+          body: "시야는 정글과 서포터만의 책임이 아니다. 운영 단계로 넘어가면 모든 포지션이 제어 와드를 구매하고, 다음 오브젝트나 교전 지역을 먼저 밝혀야 한다.",
+          items: [
+            "중반 이후에는 롱소드, 증폭의 고서, 단검 같은 잡템보다 제어 와드를 우선한다.",
+            "오브젝트 1분 전부터 주변 시야를 먼저 잡는다.",
+            "시야 없는 곳으로 들어갈 때는 혼자 확인하지 말고 팀과 같이 움직인다.",
+            "시야를 안 잡고 죽은 뒤 팀 탓을 하지 않는다."
+          ]
+        },
+        {
+          id: "adc",
+          nav: "원딜",
+          title: "원딜이 참여할 수 있는 교전을 설계한다",
+          tone: "normal",
+          body: "원딜을 배제한 채 사이드, 정글, 서포터끼리 무작정 싸우는 교전은 위험하다. 중후반 교전은 원딜이 딜을 넣을 수 있는 위치와 시간을 만들어준 뒤 여는 것이 기본이다.",
+          items: [
+            "미드 라인을 먼저 밀어두고 움직인다.",
+            "시야 주도권을 잡은 뒤 교전 각을 본다.",
+            "원딜이 합류할 수 없는 거리나 라인 상태에서는 무리하게 싸우지 않는다.",
+            "정글과 서포터가 사이드에 과투자해서 본대가 무너지는 상황을 만들지 않는다."
+          ]
+        },
+        {
+          id: "draft",
+          nav: "조합",
+          title: "조합을 맞춘다",
+          tone: "normal",
+          body: "선픽은 팀을 위해 정보를 먼저 공개하는 선택이다. 1, 2픽이 상대에게 카운터 픽을 유도당했다면, 아래 픽들은 그 부담을 덜어주는 방향으로 조합을 완성해야 한다.",
+          items: [
+            "이미 나온 아군 픽의 약점을 보완한다.",
+            "탱커, 이니시, AP/AD 밸런스, 라인 주도권, 후반 딜 구조를 확인한다.",
+            "하고 싶은 챔피언보다 팀 조합에 필요한 챔피언을 우선한다.",
+            "선픽을 해준 팀원이 게임에서 버려지지 않도록 후픽이 책임진다."
+          ]
+        },
+        {
+          id: "call",
+          nav: "콜",
+          title: "감정적인 콜을 하지 않는다",
+          tone: "warning",
+          body: "게임 중 감정적인 콜, 비난, 조롱, 의미 없는 한탄은 팀 집중력을 떨어뜨린다. 인게임 피드백도 대부분은 도움이 되지 않는다. 필요한 피드백은 게임이 끝난 뒤에 한다.",
+          items: [
+            "죽은 직후에는 원인 분석보다 다음 할 일을 말한다.",
+            "\"왜 그랬냐\"보다 \"다음 용 시야부터 잡자\"처럼 행동 지시를 우선한다.",
+            "플레이 중인 사람의 멘탈을 흔드는 말은 하지 않는다.",
+            "피드백은 게임 종료 후, 구체적인 장면 기준으로 짧게 한다."
+          ]
+        },
+        {
+          id: "identity",
+          nav: "컨셉",
+          title: "조합의 컨셉대로 플레이한다",
+          tone: "normal",
+          body: "조합이 잘 짜였다면 그 조합의 승리 방식에 맞게 플레이해야 한다. 어떤 픽을 하든 결국 정면으로 들어가서 대충 한타하는 식이면 조합을 맞춘 의미가 없다.",
+          items: [
+            "포킹 조합은 먼저 때리고 깎은 뒤 싸운다.",
+            "돌진 조합은 시야를 지운 뒤 각을 맞춰 한 번에 들어간다.",
+            "받아치는 조합은 상대 진입을 유도하고 주요 스킬을 빼며 싸운다.",
+            "사이드 운영 조합은 본대가 버티는 동안 사이드 압박으로 이득을 만든다.",
+            "한타 조합은 오브젝트 타이밍에 미리 모여 진형을 잡는다."
+          ]
+        },
+        {
+          id: "side",
+          nav: "사이드",
+          title: "사이드 욕심을 버린다",
+          tone: "warning",
+          body: "시야가 없는 쪽 사이드에서 딜교환, CS, 포탑 골드에 욕심내다 죽는 것은 팀 전체를 망치는 행동이다. 개인 이득 몇 개보다 죽지 않고 턴을 유지하는 것이 더 중요하다.",
+          items: [
+            "시야 없는 사이드에서는 라인을 깊게 밀지 않는다.",
+            "상대 위치가 보이지 않으면 CS 몇 개는 포기한다.",
+            "팀이 반대편에서 이득을 볼 수 없는 상황이라면 혼자 죽는 플레이를 하지 않는다.",
+            "사이드에서 죽으면 남은 팀원들이 오브젝트, 시야, 라인 모두를 손해 본다는 점을 기억한다."
+          ]
+        }
+      ],
+      checklist: {
+        nav: "체크",
+        title: "공통 체크리스트",
+        intro: "게임 중 판단이 애매할 때는 아래 기준으로 확인한다.",
+        items: [
+          "지금 우리 팀은 시야를 먼저 잡았는가?",
+          "원딜이 이번 교전에 참여할 수 있는가?",
+          "우리 조합은 어떤 방식으로 이겨야 하는가?",
+          "지금 콜은 팀에 도움이 되는 정보인가, 감정 배출인가?",
+          "이 사이드 플레이는 죽지 않고 빠질 수 있는가?",
+          "내가 죽으면 팀이 오브젝트나 라인을 잃는가?"
+        ]
+      },
+      closing: {
+        title: "한 줄 원칙",
+        text: "자유랭크는 다섯 명이 같이 이기는 게임이다. 혼자 이득 보려다 팀을 손해 보게 만드는 플레이를 줄이고, 조합과 시야와 합류를 기준으로 움직인다."
+      }
+    };
+
+    const state = {
+      doc: structuredClone(DEFAULT_DOC),
+      activeEditorTab: "basic",
+      remoteLoaded: false
+    };
+
+    const elements = {
+      brandText: document.querySelector("#brandText"),
+      nav: document.querySelector("#nav"),
+      eyebrow: document.querySelector("#eyebrow"),
+      title: document.querySelector("#title"),
+      lead: document.querySelector("#lead"),
+      summary: document.querySelector("#summary"),
+      rules: document.querySelector("#rules"),
+      checklistTitle: document.querySelector("#checklistTitle"),
+      checklistIntro: document.querySelector("#checklistIntro"),
+      checklist: document.querySelector("#checklist"),
+      closingTitle: document.querySelector("#closingTitle"),
+      closingText: document.querySelector("#closingText"),
+      editor: document.querySelector("#editor"),
+      editButton: document.querySelector("#editButton"),
+      closeEditor: document.querySelector("#closeEditor"),
+      editorForm: document.querySelector("#editorForm"),
+      editorTabs: document.querySelector("#editorTabs"),
+      saveData: document.querySelector("#saveData"),
+      addSummary: document.querySelector("#addSummary"),
+      addRule: document.querySelector("#addRule"),
+      downloadData: document.querySelector("#downloadData"),
+      resetData: document.querySelector("#resetData"),
+      status: document.querySelector("#status")
+    };
+
+    init();
+
+    async function init() {
+      state.doc = await loadDocument();
+      render();
+      bindEditor();
+    }
+
+    async function loadDocument() {
+      const localDraft = localStorage.getItem(STORAGE_KEY);
+
+      if (localDraft) {
+        try {
+          return JSON.parse(localDraft);
+        } catch {
+          localStorage.removeItem(STORAGE_KEY);
+        }
+      }
+
+      try {
+        const response = await fetch(DATA_URL, { cache: "no-store" });
+
+        if (!response.ok) {
+          throw new Error("rules.json을 불러오지 못했습니다.");
+        }
+
+        state.remoteLoaded = true;
+        return await response.json();
+      } catch {
+        return structuredClone(DEFAULT_DOC);
+      }
+    }
+
+    function saveDocument(nextDoc) {
+      state.doc = nextDoc;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(nextDoc, null, 2));
+      render();
+      populateEditor();
+    }
+
+    function render() {
+      const doc = state.doc;
+
+      document.title = `${doc.brand} - ${doc.eyebrow}`;
+      elements.brandText.textContent = doc.brand;
+      elements.eyebrow.textContent = doc.eyebrow;
+      elements.title.textContent = doc.title;
+      elements.lead.textContent = doc.lead;
+
+      renderNav(doc);
+      renderSummary(doc.summary);
+      renderRules(doc.rules);
+      renderChecklist(doc.checklist);
+      renderClosing(doc.closing);
+    }
+
+    function renderNav(doc) {
+      elements.nav.replaceChildren();
+
+      doc.rules.forEach((rule) => {
+        const link = document.createElement("a");
+        link.href = `#${rule.id}`;
+        link.textContent = rule.nav || rule.title;
+        elements.nav.append(link);
+      });
+
+      const checklistLink = document.createElement("a");
+      checklistLink.href = "#checklistSection";
+      checklistLink.textContent = doc.checklist.nav || "체크";
+      elements.nav.append(checklistLink);
+    }
+
+    function renderSummary(summary) {
+      elements.summary.replaceChildren();
+
+      summary.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "summary-item";
+
+        const title = document.createElement("strong");
+        title.textContent = item.title;
+
+        const text = document.createElement("span");
+        text.textContent = item.text;
+
+        card.append(title, text);
+        elements.summary.append(card);
+      });
+    }
+
+    function renderRules(rules) {
+      elements.rules.replaceChildren();
+
+      rules.forEach((rule, index) => {
+        const article = document.createElement("article");
+        article.className = rule.tone === "warning" ? "rule warning" : "rule";
+        article.id = rule.id || `rule-${index + 1}`;
+
+        const number = document.createElement("div");
+        number.className = "rule-number";
+        number.textContent = index + 1;
+
+        const content = document.createElement("div");
+        const title = document.createElement("h2");
+        title.textContent = rule.title;
+
+        const body = document.createElement("p");
+        body.textContent = rule.body;
+
+        const list = document.createElement("ul");
+        rule.items.forEach((text) => {
+          const item = document.createElement("li");
+          item.textContent = text;
+          list.append(item);
+        });
+
+        content.append(title, body, list);
+        article.append(number, content);
+        elements.rules.append(article);
+      });
+    }
+
+    function renderChecklist(checklist) {
+      elements.checklistTitle.textContent = checklist.title;
+      elements.checklistIntro.textContent = checklist.intro;
+      elements.checklist.replaceChildren();
+
+      checklist.items.forEach((text) => {
+        const item = document.createElement("li");
+        item.textContent = text;
+        elements.checklist.append(item);
+      });
+    }
+
+    function renderClosing(closing) {
+      elements.closingTitle.textContent = closing.title;
+      elements.closingText.textContent = closing.text;
+    }
+
+    function bindEditor() {
+      elements.editButton.addEventListener("click", () => {
+        const isOpen = elements.editor.classList.toggle("open");
+        elements.editButton.setAttribute("aria-expanded", String(isOpen));
+
+        if (isOpen) {
+          populateEditor({ focusFirst: true });
+          setStatus("하단 탭에서 편집할 영역을 고른 뒤 저장하세요.");
+        }
+      });
+
+      elements.closeEditor.addEventListener("click", closeEditor);
+      elements.editorForm.addEventListener("submit", (event) => event.preventDefault());
+
+      elements.editorTabs.addEventListener("click", (event) => {
+        const tabButton = event.target.closest("[data-editor-tab-button]");
+
+        if (!tabButton) {
+          return;
+        }
+
+        state.doc = collectFormDocument();
+        state.activeEditorTab = tabButton.dataset.editorTabButton;
+        populateEditor({ focusFirst: true });
+        setStatus(`${tabButton.textContent} 편집으로 이동했습니다.`);
+      });
+
+      elements.editorForm.addEventListener("click", (event) => {
+        const removeSummaryButton = event.target.closest("[data-remove-summary]");
+        const removeRuleButton = event.target.closest("[data-remove-rule]");
+
+        if (removeSummaryButton) {
+          const draft = collectFormDocument();
+          const index = Number(removeSummaryButton.dataset.removeSummary);
+
+          if (draft.summary.length <= 1) {
+            setStatus("요약은 최소 1개가 필요합니다.", true);
+            return;
+          }
+
+          draft.summary.splice(index, 1);
+          state.doc = draft;
+          render();
+          populateEditor({ activeTab: "summary" });
+          setStatus("요약을 삭제했습니다. 저장하면 브라우저에 반영됩니다.");
+          return;
+        }
+
+        if (!removeRuleButton) {
+          return;
+        }
+
+        const draft = collectFormDocument();
+        const index = Number(removeRuleButton.dataset.removeRule);
+
+        if (draft.rules.length <= 1) {
+          setStatus("규칙은 최소 1개가 필요합니다.", true);
+          return;
+        }
+
+        draft.rules.splice(index, 1);
+        state.doc = draft;
+        render();
+        populateEditor({ activeTab: "rules" });
+        setStatus("규칙을 삭제했습니다. 저장하면 브라우저에 반영됩니다.");
+      });
+
+      elements.saveData.addEventListener("click", () => {
+        try {
+          const nextDoc = collectFormDocument();
+          validateDocument(nextDoc);
+          saveDocument(nextDoc);
+          setStatus("저장했습니다. 이 브라우저에서는 새로고침해도 유지됩니다.");
+        } catch (error) {
+          setStatus(error.message || "입력값을 확인해주세요.", true);
+        }
+      });
+
+      elements.addSummary.addEventListener("click", () => {
+        const draft = collectFormDocument();
+        const index = draft.summary.length;
+        draft.summary.push({
+          title: `새 요약 ${index + 1}`,
+          text: "요약 내용을 입력하세요."
+        });
+        state.doc = draft;
+        render();
+        populateEditor({
+          activeTab: "summary",
+          focusSelector: `[data-summary-index="${index}"]`
+        });
+        setStatus("새 요약을 추가했습니다. 내용을 채운 뒤 저장하세요.");
+      });
+
+      elements.addRule.addEventListener("click", () => {
+        const draft = collectFormDocument();
+        const index = draft.rules.length;
+        const number = index + 1;
+        draft.rules.push({
+          id: uniqueRuleId(draft.rules),
+          nav: `규칙 ${number}`,
+          title: "새 규칙",
+          tone: "normal",
+          body: "새 규칙의 설명을 입력하세요.",
+          items: ["세부 항목을 입력하세요."]
+        });
+        state.doc = draft;
+        render();
+        populateEditor({
+          activeTab: "rules",
+          focusSelector: `[data-rule-index="${index}"]`
+        });
+        setStatus("새 규칙을 추가했습니다. 내용을 채운 뒤 저장하세요.");
+      });
+
+      elements.downloadData.addEventListener("click", () => {
+        try {
+          const nextDoc = collectFormDocument();
+          validateDocument(nextDoc);
+          const blob = new Blob([JSON.stringify(nextDoc, null, 2)], { type: "application/json;charset=utf-8" });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = "rules.json";
+          document.body.append(link);
+          link.click();
+          link.remove();
+          URL.revokeObjectURL(url);
+          setStatus("현재 양식 내용으로 rules.json 파일을 만들었습니다. GitHub의 rules.json을 이 파일로 교체하면 모두에게 반영됩니다.");
+        } catch (error) {
+          setStatus(error.message || "입력값을 확인해주세요.", true);
+        }
+      });
+
+      elements.resetData.addEventListener("click", () => {
+        if (!confirm("저장된 수정 내용을 초기화할까요?")) {
+          return;
+        }
+
+        localStorage.removeItem(STORAGE_KEY);
+        state.doc = state.remoteLoaded ? structuredClone(DEFAULT_DOC) : structuredClone(DEFAULT_DOC);
+        state.activeEditorTab = "basic";
+        render();
+        populateEditor({ focusFirst: true });
+        setStatus("초기 상태로 되돌렸습니다.");
+      });
+    }
+
+    function closeEditor() {
+      elements.editor.classList.remove("open");
+      elements.editButton.setAttribute("aria-expanded", "false");
+      setStatus("");
+    }
+
+    function populateEditor(options = {}) {
+      if (options.activeTab) {
+        state.activeEditorTab = options.activeTab;
+      }
+
+      const doc = state.doc;
+      elements.editorForm.replaceChildren();
+
+      elements.editorForm.append(
+        createBasicSection(doc),
+        createSummarySection(doc.summary),
+        createRulesSection(doc.rules),
+        createChecklistSection(doc.checklist),
+        createClosingSection(doc.closing)
+      );
+
+      renderEditorTabs();
+      applyActiveEditorTab();
+      updateActionVisibility();
+
+      if (options.focusSelector) {
+        focusEditorTarget(options.focusSelector);
+      } else if (options.focusFirst) {
+        focusEditorTarget(`[data-editor-tab="${state.activeEditorTab}"]`);
+      }
+    }
+
+    function createBasicSection(doc) {
+      const section = createSection("기본 정보", "basic");
+      const grid = createGrid();
+      grid.append(
+        createField("브랜드명", "brand", doc.brand),
+        createField("문서 분류", "eyebrow", doc.eyebrow),
+        createField("제목", "title", doc.title, { full: true }),
+        createField("소개 문장", "lead", doc.lead, { full: true, multiline: true, rows: 3 })
+      );
+      section.append(grid);
+      return section;
+    }
+
+    function createSummarySection(summary) {
+      const section = createSection("핵심 요약", "summary");
+      const list = createList();
+
+      summary.forEach((item, index) => {
+        const group = document.createElement("div");
+        group.className = "rule-form";
+        group.dataset.summaryIndex = index;
+
+        const header = document.createElement("div");
+        header.className = "rule-form-header";
+
+        const title = document.createElement("h4");
+        title.textContent = `요약 ${index + 1}`;
+
+        const remove = document.createElement("button");
+        remove.className = "button danger";
+        remove.type = "button";
+        remove.dataset.removeSummary = index;
+        remove.textContent = "삭제";
+
+        header.append(title, remove);
+
+        const grid = createGrid();
+        grid.append(
+          createField("요약 제목", "summaryTitle", item.title),
+          createField("요약 내용", "summaryText", item.text, { full: true, multiline: true, rows: 3 })
+        );
+
+        group.append(header, grid);
+        list.append(group);
+      });
+
+      section.append(list);
+      return section;
+    }
+
+    function createRulesSection(rules) {
+      const section = createSection("규칙", "rules");
+      const list = createList();
+
+      rules.forEach((rule, index) => {
+        const group = document.createElement("div");
+        group.className = "rule-form";
+        group.dataset.ruleIndex = index;
+        group.dataset.ruleId = rule.id;
+
+        const header = document.createElement("div");
+        header.className = "rule-form-header";
+
+        const title = document.createElement("h4");
+        title.textContent = `규칙 ${index + 1}`;
+
+        const remove = document.createElement("button");
+        remove.className = "button danger";
+        remove.type = "button";
+        remove.dataset.removeRule = index;
+        remove.textContent = "삭제";
+
+        header.append(title, remove);
+
+        const grid = createGrid();
+        grid.append(
+          createField("목차 이름", "ruleNav", rule.nav || rule.title),
+          createField("강조", "ruleTone", rule.tone || "normal", {
+            options: [
+              ["normal", "일반"],
+              ["warning", "주의"]
+            ]
+          }),
+          createField("규칙 제목", "ruleTitle", rule.title, { full: true }),
+          createField("설명", "ruleBody", rule.body, { full: true, multiline: true, rows: 3 }),
+          createField("세부 항목", "ruleItems", rule.items.join("\n"), {
+            full: true,
+            multiline: true,
+            rows: 5,
+            tall: true,
+            hint: "한 줄에 하나씩 입력"
+          })
+        );
+
+        group.append(header, grid);
+        list.append(group);
+      });
+
+      section.append(list);
+      return section;
+    }
+
+    function createChecklistSection(checklist) {
+      const section = createSection("체크리스트", "checklist");
+      const grid = createGrid();
+      grid.append(
+        createField("목차 이름", "checklistNav", checklist.nav || "체크"),
+        createField("제목", "checklistTitle", checklist.title),
+        createField("설명", "checklistIntro", checklist.intro, { full: true, multiline: true, rows: 2 }),
+        createField("질문 목록", "checklistItems", checklist.items.join("\n"), {
+          full: true,
+          multiline: true,
+          rows: 5,
+          tall: true,
+          hint: "한 줄에 하나씩 입력"
+        })
+      );
+      section.append(grid);
+      return section;
+    }
+
+    function createClosingSection(closing) {
+      const section = createSection("한 줄 원칙", "closing");
+      const grid = createGrid();
+      grid.append(
+        createField("제목", "closingTitle", closing.title),
+        createField("내용", "closingText", closing.text, { full: true, multiline: true, rows: 3 })
+      );
+      section.append(grid);
+      return section;
+    }
+
+    function createSection(titleText, tabId) {
+      const section = document.createElement("section");
+      section.className = "editor-section";
+      section.dataset.editorTab = tabId;
+
+      const title = document.createElement("h3");
+      title.textContent = titleText;
+
+      section.append(title);
+      return section;
+    }
+
+    function getEditorTabList() {
+      return [
+        ["basic", "기본 정보"],
+        ["summary", "요약"],
+        ["rules", "규칙"],
+        ["checklist", "체크리스트"],
+        ["closing", "한 줄 원칙"]
+      ];
+    }
+
+    function renderEditorTabs() {
+      elements.editorTabs.replaceChildren();
+
+      getEditorTabList().forEach(([tabId, label]) => {
+        const button = document.createElement("button");
+        button.className = "editor-tab";
+        button.type = "button";
+        button.role = "tab";
+        button.dataset.editorTabButton = tabId;
+        button.textContent = label;
+        button.setAttribute("aria-selected", String(tabId === state.activeEditorTab));
+        elements.editorTabs.append(button);
+      });
+    }
+
+    function applyActiveEditorTab() {
+      elements.editorForm.querySelectorAll("[data-editor-tab]").forEach((section) => {
+        section.classList.toggle("active", section.dataset.editorTab === state.activeEditorTab);
+      });
+
+      elements.editorTabs.querySelectorAll("[data-editor-tab-button]").forEach((button) => {
+        button.setAttribute("aria-selected", String(button.dataset.editorTabButton === state.activeEditorTab));
+      });
+    }
+
+    function updateActionVisibility() {
+      elements.addSummary.hidden = state.activeEditorTab !== "summary";
+      elements.addRule.hidden = state.activeEditorTab !== "rules";
+    }
+
+    function focusEditorTarget(selector) {
+      requestAnimationFrame(() => {
+        const target = elements.editorForm.querySelector(selector);
+
+        if (!target) {
+          return;
+        }
+
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        const firstInput = target.matches("input, textarea, select")
+          ? target
+          : target.querySelector("input, textarea, select");
+        firstInput?.focus({ preventScroll: true });
+      });
+    }
+
+    function createGrid() {
+      const grid = document.createElement("div");
+      grid.className = "form-grid";
+      return grid;
+    }
+
+    function createList() {
+      const list = document.createElement("div");
+      list.className = "form-list";
+      return list;
+    }
+
+    function createField(labelText, name, value, options = {}) {
+      const field = document.createElement("div");
+      field.className = options.full ? "field full" : "field";
+
+      const label = document.createElement("label");
+      label.textContent = options.hint ? `${labelText} (${options.hint})` : labelText;
+
+      let input;
+
+      if (options.options) {
+        input = document.createElement("select");
+        options.options.forEach(([optionValue, optionLabel]) => {
+          const option = document.createElement("option");
+          option.value = optionValue;
+          option.textContent = optionLabel;
+          input.append(option);
+        });
+      } else if (options.multiline) {
+        input = document.createElement("textarea");
+        input.rows = options.rows || 3;
+        input.classList.toggle("tall", Boolean(options.tall));
+      } else {
+        input = document.createElement("input");
+        input.type = "text";
+      }
+
+      input.dataset.name = name;
+      input.value = value || "";
+      field.append(label, input);
+      return field;
+    }
+
+    function collectFormDocument() {
+      const form = elements.editorForm;
+      const summary = Array.from(form.querySelectorAll("[data-summary-index]")).map((group) => ({
+        title: getValue(group, "summaryTitle"),
+        text: getValue(group, "summaryText")
+      }));
+
+      const rules = Array.from(form.querySelectorAll("[data-rule-index]")).map((group, index) => ({
+        id: group.dataset.ruleId || `rule-${index + 1}`,
+        nav: getValue(group, "ruleNav"),
+        title: getValue(group, "ruleTitle"),
+        tone: getValue(group, "ruleTone") || "normal",
+        body: getValue(group, "ruleBody"),
+        items: linesToArray(getValue(group, "ruleItems"))
+      }));
+
+      return {
+        brand: getValue(form, "brand"),
+        eyebrow: getValue(form, "eyebrow"),
+        title: getValue(form, "title"),
+        lead: getValue(form, "lead"),
+        summary,
+        rules,
+        checklist: {
+          nav: getValue(form, "checklistNav") || "체크",
+          title: getValue(form, "checklistTitle"),
+          intro: getValue(form, "checklistIntro"),
+          items: linesToArray(getValue(form, "checklistItems"))
+        },
+        closing: {
+          title: getValue(form, "closingTitle"),
+          text: getValue(form, "closingText")
+        }
+      };
+    }
+
+    function getValue(scope, name) {
+      return scope.querySelector(`[data-name="${name}"]`)?.value.trim() || "";
+    }
+
+    function linesToArray(value) {
+      return value
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean);
+    }
+
+    function uniqueRuleId(rules) {
+      let index = rules.length + 1;
+      let candidate = `rule-${index}`;
+      const usedIds = new Set(rules.map((rule) => rule.id));
+
+      while (usedIds.has(candidate)) {
+        index += 1;
+        candidate = `rule-${index}`;
+      }
+
+      return candidate;
+    }
+
+    function setStatus(message, isError = false) {
+      elements.status.textContent = message;
+      elements.status.classList.toggle("error", isError);
+    }
+
+    function validateDocument(doc) {
+      const requiredStrings = [
+        ["brand", "브랜드명"],
+        ["eyebrow", "문서 분류"],
+        ["title", "제목"],
+        ["lead", "소개 문장"]
+      ];
+
+      requiredStrings.forEach(([key, label]) => {
+        if (typeof doc[key] !== "string" || !doc[key].trim()) {
+          throw new Error(`${label}을 입력해주세요.`);
+        }
+      });
+
+      if (!Array.isArray(doc.summary) || !Array.isArray(doc.rules)) {
+        throw new Error("요약과 규칙 영역을 확인해주세요.");
+      }
+
+      if (!doc.summary.length) {
+        throw new Error("핵심 요약을 최소 1개 입력해주세요.");
+      }
+
+      doc.summary.forEach((item, index) => {
+        if (!item.title || !item.text) {
+          throw new Error(`${index + 1}번 요약의 제목과 내용을 입력해주세요.`);
+        }
+      });
+
+      if (!doc.rules.length) {
+        throw new Error("규칙을 최소 1개 입력해주세요.");
+      }
+
+      if (!doc.checklist || !Array.isArray(doc.checklist.items)) {
+        throw new Error("체크리스트 질문 목록을 확인해주세요.");
+      }
+
+      if (!doc.checklist.title || !doc.checklist.intro || !doc.checklist.items.length) {
+        throw new Error("체크리스트 제목, 설명, 질문을 입력해주세요.");
+      }
+
+      if (!doc.closing || !doc.closing.title || !doc.closing.text) {
+        throw new Error("한 줄 원칙의 제목과 내용을 입력해주세요.");
+      }
+
+      doc.rules.forEach((rule, index) => {
+        if (!rule.id || !rule.title || !rule.body || !Array.isArray(rule.items) || !rule.items.length) {
+          throw new Error(`${index + 1}번 규칙의 제목, 설명, 세부 항목을 입력해주세요.`);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
