@@ -641,6 +641,7 @@
     <div class="editor-tabs" id="editorTabs" role="tablist" aria-label="편집 영역"></div>
     <div class="editor-actions">
       <button class="button primary" id="saveData" type="button">저장</button>
+      <button class="button primary" id="publishData" type="button">GitHub에 게시</button>
       <button class="button" id="addSummary" type="button">요약 추가</button>
       <button class="button" id="addRule" type="button">규칙 추가</button>
       <button class="button" id="downloadData" type="button">rules.json 받기</button>
@@ -652,6 +653,11 @@
   <script>
     const STORAGE_KEY = "jarank-rules-document-v1";
     const DATA_URL = "rules.json";
+    const GITHUB_OWNER = "anhaeyeong";
+    const GITHUB_REPO = "NewNeoHyperJaraengRules";
+    const GITHUB_BRANCH = "main";
+    const GITHUB_DATA_PATH = "rules.json";
+    const GITHUB_TOKEN_KEY = "jarank-github-token-session";
 
     const DEFAULT_DOC = {
       brand: "자랭의 정석",
@@ -797,6 +803,7 @@
       editorForm: document.querySelector("#editorForm"),
       editorTabs: document.querySelector("#editorTabs"),
       saveData: document.querySelector("#saveData"),
+      publishData: document.querySelector("#publishData"),
       addSummary: document.querySelector("#addSummary"),
       addRule: document.querySelector("#addRule"),
       downloadData: document.querySelector("#downloadData"),
@@ -1018,6 +1025,27 @@
           setStatus("저장했습니다. 이 브라우저에서는 새로고침해도 유지됩니다.");
         } catch (error) {
           setStatus(error.message || "입력값을 확인해주세요.", true);
+        }
+      });
+
+      elements.publishData.addEventListener("click", async () => {
+        try {
+          const nextDoc = collectFormDocument();
+          validateDocument(nextDoc);
+
+          if (!confirm("현재 편집 내용을 GitHub rules.json에 커밋할까요?")) {
+            return;
+          }
+
+          elements.publishData.disabled = true;
+          setStatus("GitHub에 게시하는 중입니다...");
+          await publishDocumentToGitHub(nextDoc);
+          saveDocument(nextDoc);
+          setStatus("GitHub에 게시했습니다. Pages 반영까지 잠시 걸릴 수 있습니다.");
+        } catch (error) {
+          setStatus(error.message || "GitHub 게시에 실패했습니다.", true);
+        } finally {
+          elements.publishData.disabled = false;
         }
       });
 
@@ -1426,6 +1454,94 @@
       }
 
       return candidate;
+    }
+
+    async function publishDocumentToGitHub(doc) {
+      const token = getGitHubToken();
+      const currentFile = await getGitHubFile(token);
+      const content = `${JSON.stringify(doc, null, 2)}\n`;
+
+      await githubRequest(
+        `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${encodeURIComponent(GITHUB_DATA_PATH)}`,
+        token,
+        {
+          method: "PUT",
+          body: JSON.stringify({
+            message: "Update rules.json from site editor",
+            content: toBase64Utf8(content),
+            sha: currentFile?.sha,
+            branch: GITHUB_BRANCH
+          })
+        }
+      );
+    }
+
+    async function getGitHubFile(token) {
+      try {
+        return await githubRequest(
+          `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${encodeURIComponent(GITHUB_DATA_PATH)}?ref=${encodeURIComponent(GITHUB_BRANCH)}`,
+          token
+        );
+      } catch (error) {
+        if (error.status === 404) {
+          return null;
+        }
+
+        throw error;
+      }
+    }
+
+    async function githubRequest(url, token, options = {}) {
+      const response = await fetch(url, {
+        method: options.method || "GET",
+        headers: {
+          Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${token}`,
+          "X-GitHub-Api-Version": "2022-11-28",
+          ...(options.body ? { "Content-Type": "application/json" } : {})
+        },
+        body: options.body
+      });
+
+      const text = await response.text();
+      const data = text ? JSON.parse(text) : null;
+
+      if (!response.ok) {
+        const message = data?.message || `GitHub API 오류: ${response.status}`;
+        const error = new Error(message);
+        error.status = response.status;
+        throw error;
+      }
+
+      return data;
+    }
+
+    function getGitHubToken() {
+      const existingToken = sessionStorage.getItem(GITHUB_TOKEN_KEY);
+
+      if (existingToken) {
+        return existingToken;
+      }
+
+      const token = prompt("GitHub fine-grained token을 입력하세요. 토큰은 이 탭의 sessionStorage에만 임시 저장됩니다.");
+
+      if (!token?.trim()) {
+        throw new Error("GitHub 토큰이 필요합니다.");
+      }
+
+      sessionStorage.setItem(GITHUB_TOKEN_KEY, token.trim());
+      return token.trim();
+    }
+
+    function toBase64Utf8(text) {
+      const bytes = new TextEncoder().encode(text);
+      let binary = "";
+
+      bytes.forEach((byte) => {
+        binary += String.fromCharCode(byte);
+      });
+
+      return btoa(binary);
     }
 
     function setStatus(message, isError = false) {
